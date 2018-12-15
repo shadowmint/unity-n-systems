@@ -1,0 +1,28 @@
+{
+  "name": "unity-n-systems",
+  "version": "0.0.1",
+  "description": "Systems scaffold",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowmint/unity-n-systems.git"
+  },
+  "files": [
+    "index.js",
+    "scripts",
+    "src"
+  ],
+  "author": "douglas.linder@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shadowmint/unity-n-systems/issues"
+  },
+  "homepage": "https://github.com/shadowmint/unity-n-systems",
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "dependencies": {
+    "unity-n-bind": "github:shadowmint/unity-n-bind#1.1.2",
+    "unity-n-optional": "github:shadowmint/unity-n-optional#1.0.0"
+  }
+}
