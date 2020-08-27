@@ -1,6 +1,6 @@
 {
   "name": "unity-n-systems",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Systems scaffold",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
-    "unity-n-bind": "github:shadowmint/unity-n-bind#1.1.2",
+    "unity-n-bind": "github:shadowmint/unity-n-bind#1.2.0",
     "unity-n-optional": "github:shadowmint/unity-n-optional#2.0.0"
   }
 }
