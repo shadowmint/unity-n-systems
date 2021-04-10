@@ -12,13 +12,28 @@ namespace N.Package.GameSystems.Infrastructure
 
         public GameSystem Instance => _instance;
 
-        public bool Update(bool systemState, GameSystem prefab)
+        public bool Update(bool systemState, GameSystem prefab, bool exists)
         {
-            return Update<GameSystem>(systemState, prefab, null);
+            return Update<GameSystem>(systemState, prefab, null, exists);
         }
 
-        public bool Update<T>(bool systemState, GameSystem prefab, Action<T> preInitHook) where T : class
+        public bool Update<T>(bool systemState, GameSystem prefab, Action<T> preInitHook, bool exists) where T : class
         {
+            // If the state is 'exists' but no concrete instance currently exists, try to find it.
+            if (exists && systemState && !_currentState)
+            {
+                var concreteType = prefab.GetComponent<GameSystem>().GetType();
+                Debug.Log(concreteType);
+
+                var instance = Object.FindObjectOfType(concreteType) as GameSystem;
+                if (instance != null)
+                {
+                    _instance = instance;
+                    _currentState = true;
+                }
+            }
+
+            // Process as normal
             if (_currentState == systemState) return _currentState;
             if (systemState)
             {
@@ -80,7 +95,7 @@ namespace N.Package.GameSystems.Infrastructure
                 catch (Exception error)
                 {
                     Debug.LogError($"Failed to run preInitHook on game system: {_instance}: {error}");
-                }    
+                }
             }
 
             try

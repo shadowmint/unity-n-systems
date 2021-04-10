@@ -10,7 +10,7 @@ namespace N.Package.GameSystems
 {
     public abstract class SystemsManager : MonoBehaviour
     {
-        public List<GameSystemReference> Systems;
+        public List<GameSystemReference> systems;
 
         private Registry _services;
 
@@ -29,7 +29,7 @@ namespace N.Package.GameSystems
 
         private void SyncEnabledSystems()
         {
-            Systems.ForEach(i => i.Exists = i.Tracker.Update(i.Enabled, i.Template));
+            systems.ForEach(i => i.Exists = i.Tracker.Update(i.Enabled, i.Template, i.Exists));
         }
 
         public void Update()
@@ -44,16 +44,16 @@ namespace N.Package.GameSystems
         /// </summary>
         public void Initialize<T>(Action<T> preInitHook) where T : GameSystem
         {
-            Systems.Where(i => i.Template.GetType() == typeof(T))
+            systems.Where(i => i.Template.GetType() == typeof(T))
                 .ToList()
-                .ForEach(system => { system.Tracker.Update(system.Enabled, system.Template, preInitHook); });
+                .ForEach(system => { system.Tracker.Update(system.Enabled, system.Template, preInitHook, system.Exists); });
         }
 
         protected abstract IServiceModule Services();
 
         public Option<T> System<T>() where T : GameSystem
         {
-            var systemRef = Systems.FirstOrDefault(i => i.Exists && i.Tracker.Instance.GetType() == typeof(T));
+            var systemRef = systems.FirstOrDefault(i => i.Exists && i.Tracker.Instance.GetType() == typeof(T));
             return systemRef == null ? Option.None<T>() : Option.Some(systemRef.Tracker.Instance as T);
         }
 
