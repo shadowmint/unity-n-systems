@@ -23,13 +23,13 @@ namespace N.Package.GameSystems.Infrastructure
             if (exists && systemState && !_currentState)
             {
                 var concreteType = prefab.GetComponent<GameSystem>().GetType();
-                Debug.Log(concreteType);
-
                 var instance = Object.FindObjectOfType(concreteType) as GameSystem;
                 if (instance != null)
                 {
                     _instance = instance;
                     _currentState = true;
+                    Debug.Log($"Found existing: {concreteType}");
+                    SpawnAndInitializeSystem(prefab, preInitHook, true);
                 }
             }
 
@@ -37,7 +37,7 @@ namespace N.Package.GameSystems.Infrastructure
             if (_currentState == systemState) return _currentState;
             if (systemState)
             {
-                SpawnAndInitializeSystem(prefab, preInitHook);
+                SpawnAndInitializeSystem(prefab, preInitHook, false);
             }
             else
             {
@@ -71,19 +71,22 @@ namespace N.Package.GameSystems.Infrastructure
             }
         }
 
-        private void SpawnAndInitializeSystem<T>(GameSystem prefab, Action<T> preInitHook) where T : class
+        private void SpawnAndInitializeSystem<T>(GameSystem prefab, Action<T> preInitHook, bool alreadyExists) where T : class
         {
-            try
+            if (!alreadyExists)
             {
-                ShutdownAndDestroySystem();
-                _instance = Object.Instantiate(prefab);
-                _instance.transform.name = _instance.GetType().Name;
-            }
-            catch (Exception error)
-            {
-                Debug.LogError($"Failed to create game system: {_instance}: {error}");
-                _instance = null;
-                return;
+                try
+                {
+                    ShutdownAndDestroySystem();
+                    _instance = Object.Instantiate(prefab);
+                    _instance.transform.name = _instance.GetType().Name;
+                }
+                catch (Exception error)
+                {
+                    Debug.LogError($"Failed to create game system: {_instance}: {error}");
+                    _instance = null;
+                    return;
+                }
             }
 
             if (preInitHook != null)
