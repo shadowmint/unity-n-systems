@@ -4,11 +4,23 @@ using N.Package.Optional;
 
 namespace N.Package.GameSystems
 {
+    public struct LazySystem
+    {
+        internal static Guid SceneId = Guid.NewGuid();
+
+        public static void ResetAll()
+        {
+            SceneId = Guid.NewGuid();
+        }
+    }
+
     /// <summary>
     /// Helper to lazy load services for consumers with no constructor (eg. MonoBehaviour).
     /// </summary>
     public struct LazySystem<T> where T : GameSystem
     {
+        private Guid _instanceId;
+
         private bool _initialized;
 
         private Option<T> _instance;
@@ -17,6 +29,13 @@ namespace N.Package.GameSystems
         {
             get
             {
+                if (_instanceId != LazySystem.SceneId)
+                {
+                    _instanceId = LazySystem.SceneId;
+                    _instance = Option.None<T>();
+                    _initialized = false;
+                }
+
                 if (_initialized)
                 {
                     return _instance;

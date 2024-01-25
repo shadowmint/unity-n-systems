@@ -16,6 +16,10 @@ namespace N.Package.GameSystems
 
         private AtInterval _updateSystemsAtInterval;
 
+        protected virtual void OnSystemsLoaded()
+        {
+        }
+
         private void Awake()
         {
             _updateSystemsAtInterval = new AtInterval()
@@ -25,6 +29,8 @@ namespace N.Package.GameSystems
             };
 
             SyncEnabledSystems();
+
+            OnSystemsLoaded();
         }
 
         private void SyncEnabledSystems()
@@ -40,20 +46,27 @@ namespace N.Package.GameSystems
         /// <summary>
         /// Explicitly initialize a system by catching the instance before the Initialize method is called.
         /// You can use this to override the state of system before it is initialized, eg. for tests.
-        /// Note this is a one time action; disabling and enabling the system will skip this.
+        /// Leave the system *disabled* and then call this to enable and initialize the system.
+        /// 
+        /// Note this is a one time action; it only invokes the hook when spawning the system; if
+        /// the system is already manifest, it does nothing.
         /// </summary>
         public void Initialize<T>(Action<T> preInitHook) where T : GameSystem
         {
             systems.Where(i => i.Template.GetType() == typeof(T))
                 .ToList()
-                .ForEach(system => { system.Tracker.Update(system.Enabled, system.Template, preInitHook, system.Exists); });
+                .ForEach(system =>
+                {
+                    system.Enabled = true;
+                    system.Tracker.Update(system.Enabled, system.Template, preInitHook, system.Exists);
+                });
         }
 
         protected abstract IServiceModule Services();
 
         public Option<T> System<T>() where T : GameSystem
         {
-            var systemRef = systems.FirstOrDefault(i => i.Exists && i.Tracker.Instance.GetType() == typeof(T));
+            var systemRef = systems.FirstOrDefault(i => i.Tracker.InstanceExists && i.Tracker.Instance.GetType() == typeof(T));
             return systemRef == null ? Option.None<T>() : Option.Some(systemRef.Tracker.Instance as T);
         }
 

@@ -7,10 +7,10 @@ namespace N.Package.GameSystems.Infrastructure
     public class GameSystemTracker
     {
         private bool _currentState;
-
         private GameSystem _instance;
 
         public GameSystem Instance => _instance;
+        public bool InstanceExists => _currentState;
 
         public bool Update(bool systemState, GameSystem prefab, bool exists)
         {
@@ -28,7 +28,7 @@ namespace N.Package.GameSystems.Infrastructure
                 {
                     _instance = instance;
                     _currentState = true;
-                    Debug.Log($"Found existing: {concreteType}");
+                    // Debug.Log($"Found existing: {concreteType}");
                     SpawnAndInitializeSystem(prefab, preInitHook, true);
                 }
             }
@@ -112,7 +112,7 @@ namespace N.Package.GameSystems.Infrastructure
                 return;
             }
 
-            Debug.Log($"Initialised game system: {_instance}");
+            // Debug.Log($"Initialised game system: {_instance}");
         }
     }
 }

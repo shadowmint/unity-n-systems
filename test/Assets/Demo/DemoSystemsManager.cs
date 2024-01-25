@@ -7,19 +7,20 @@ using UnityEngine;
 
 namespace Demo
 {
-public class DemoSystemsManager : SystemsManager
-{
-  protected override IServiceModule Services()
-  {
-    return new DemoSystemsConfig();
-  }
-}
+    public class DemoSystemsManager : SystemsManager
+    {
+        
+        protected override IServiceModule Services()
+        {
+            return new DemoSystemsConfig();
+        }
+    }
 
-public class DemoSystemsConfig : IServiceModule
-{
-  public void Register(ServiceRegistry registry)
-  {
-    registry.Register<LogService>();
-  }
-}
+    public class DemoSystemsConfig : IServiceModule
+    {
+        public void Register(ServiceRegistry registry)
+        {
+            registry.Register<LogService>();
+        }
+    }
 }
