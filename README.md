@@ -107,10 +107,9 @@ your Assets/pkg-all folder.
 
 ## Development
 
-Setup and run tests:
+Npm no longer supports local packages, so you must:
 
-    npm install
-    npm install ..
+    npm pack
     cd test
     npm install
 

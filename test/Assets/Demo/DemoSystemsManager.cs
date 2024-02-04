@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Demo.Services.Concrete;
 using N.Package.Bind;
 using N.Package.GameSystems;
+using N.Package.GameSystems.Utility.SceneTools;
 using UnityEngine;
 
 namespace Demo
@@ -21,6 +22,7 @@ namespace Demo
         public void Register(ServiceRegistry registry)
         {
             registry.Register<LogService>();
+            registry.Register<NSceneToolsService>();
         }
     }
 }

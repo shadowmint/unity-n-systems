@@ -1,6 +1,6 @@
 {
   "name": "unity-n-systems",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Systems scaffold",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "unity-n-bind": "github:shadowmint/unity-n-bind#1.2.0",
-    "unity-n-optional": "github:shadowmint/unity-n-optional#2.0.0"
+    "unity-n-optional": "github:shadowmint/unity-n-optional#2.1.0",
+    "unity-n-promises": "github:shadowmint/unity-n-promises#1.2.1"
   }
 }
