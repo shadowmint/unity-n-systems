@@ -21,7 +21,7 @@ namespace N.Package.GameSystems
       {
         if (_instance == null)
         {
-          _instance = Object.FindObjectOfType<SystemsManager>();
+          _instance = Object.FindFirstObjectByType<SystemsManager>();
         }
 
         return _instance;

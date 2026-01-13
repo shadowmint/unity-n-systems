@@ -23,7 +23,7 @@ namespace N.Package.GameSystems.Infrastructure
             if (exists && systemState && !_currentState)
             {
                 var concreteType = prefab.GetComponent<GameSystem>().GetType();
-                var instance = Object.FindObjectOfType(concreteType) as GameSystem;
+                var instance = Object.FindFirstObjectByType(concreteType) as GameSystem;
                 if (instance != null)
                 {
                     _instance = instance;
